@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+  <head>
+  	<title>Ember JS App</title>
+  	<link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+
+    <header id="header" class="">
+     <script type='text/x-handlebars'>
+      {{Exemple.AppInfo.name}}
+      {{Exemple.AppInfo.description}}
+      <img {{bindAttr src="Exemple.AppInfo.logo"}} alt="">
+     </script>
+    </header>
+
+    <script type='text/x-handlebars'>
+      {{#each Exemple.listController}}
+        <section>
+          {{name}} {{description}}
+        </section>
+      {{/each}}
+    </script>
+
+    <footer>
+      <script type='text/x-handlebars'>
+          {{Exemple.AppInfo.author}}
+      </script>
+    </footer>
+
+    <script type='text/x-handlebars' data-template-name='newsList-template'>
+      {{#view Exemple.View id="looping-view" }}
+        {{#each Exemple.myView.controller}}
+          <li>{{ name }} - {{ description }}</li>
+        {{/each}}
+      {{/view }}
+    </script>
+
+  </body>
+
+  <script data-main="js/app.js" src="js/libs/require/require.js"></script>
+</html>
