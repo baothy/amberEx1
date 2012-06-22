@@ -2,8 +2,8 @@
 require.config({
   baseUrl: 'js/',
   paths: {
-    jquery : 'libs/jquery-1.6.1.min',
-    ember  : 'libs/ember-0.9.8.1',
+    jquery : 'libs/jquery-1.7.2.min',
+    ember  : 'libs/ember',
     text   : 'libs/require/text'
   }
 });
@@ -12,18 +12,38 @@ require.config({
 define( 'app', [
   'jquery',
   'app/router/router',
+  'app/controllers/aboutController',
+  'app/views/aboutView',
+  'app/controllers/applicationController',
+  'app/views/applicationView',
+  'app/controllers/newsController',
+  'app/views/newsView',
   'ember'
-  ], function( $, router) {
-    var Exemple = Ember.Application.create({
+  ], function( $, router, aboutController, aboutView, applicationController, applicationView, newsController, newsView) {
+    var App = Ember.Application.create({
       ready: function () {
+
+        // your view variable names must end with *View
+
+        // ApplicationController & ApplicationView are called by default by the router
+        // which could be good for the header / footer / base template
+
+        this.ApplicationController = applicationController;
+        this.ApplicationView       = applicationView;
+
+        this.AboutController       = aboutController;
+        this.AboutView             = aboutView;
+
+        this.NewsController       = newsController.Controller;
+        this.NewsView             = newsView.View;
+
+        this.Router                = router;
+
         this.initialize();
-        router.transitionTo('news.test');
-        router.transitionTo('test');
       }
     });
 
-    // Exemple.router = router;
     // Expose the application globally
-    return window.Exemple = Exemple;
+    // return window.Exemple = Exemple;
   }
 );

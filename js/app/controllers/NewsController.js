@@ -1,7 +1,8 @@
-
 define(['ember', 'app/models/model'],
 
 function (ember, model) {
+
+  var ListController = Ember.ArrayController.extend();
 
   var listController = Ember.ArrayController.create({
      content: [],
@@ -24,5 +25,11 @@ function (ember, model) {
 
   listController.getNews();
 
-  return listController;
+  // we return 1 object with 2 properties:
+  // the interface for the global object
+  // the instance for the router
+  return {
+    controller: listController,
+    Controller: ListController
+  };
 });

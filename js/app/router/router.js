@@ -1,31 +1,58 @@
-define(['ember', 'app/controllers/controller', 'app/views/view'],
+define(['ember', 'app/controllers/aboutController', 'app/views/aboutView', 'app/views/newsView'],
 
-function (ember, controller, view) {
+function (ember, aboutController, aboutView, newsView) {
 
   var Router = Ember.Router.extend({
-    root: Ember.State.extend({
-      index: Ember.State.extend({
-        // location: Ember.Location.create({style: 'hash'}),
-        location: 'hash',
-        enableLogging: true,
+    root: Ember.Route.extend({
+      viewNews: Ember.State.transitionTo('news.index'),
+      goToAbout: Ember.State.transitionTo('about'),
+      goToShowPost: Ember.State.transitionTo('app.show'),
+
+      index: Ember.Route.extend({
         route: '/',
-        redirectsTo: 'news.index'
+        redirectsTo: "app.index"
       }),
-      news: Ember.State.extend({
-        route    : '/news',
-        // showPost : Ember.State.transitionTo('post'),
-        test     : Ember.ViewState.extend({
-                    route: '/test',
-                    view: view.appendTo('body')
-        }),
-        index    : Ember.ViewState.extend({
-                    route: '/',
-                    view: null
+
+      news: Ember.Route.extend({
+        route: '/news',
+
+        index: Ember.Route.extend({
+          route: '/',
+          connectOutlets: function(router, context) {
+            // we call applicationController which has a tag {{content}}
+            // which act as a placeHolder for the view we want to set in
+             var newsController = router.get('applicationController');
+
+             // 'about' here is the AboutView
+             // newsController.connectOutlet('news', newsView.view.controller.content);
+             newsController.connectOutlet({
+              viewClass: newsView.View,
+              // name: 'news',
+              controller: newsView.view.controller.content,
+              outletName: 'news'
+            });
+          }
+        })
+      }),
+
+      app: Ember.Route.extend({
+        route: '/app',
+
+        index: Ember.Route.extend({
+          route: '/',
+          connectOutlets: function(router, context) {
+            // we call applicationController which has a tag {{content}}
+            // which act as a placeHolder for the view we want to set in
+             var appController = router.get('applicationController');
+
+             // 'about' here is the AboutView
+             appController.connectOutlet('about');
+          }
         })
       })
+
     })
   });
 
-  var router = Router.create({});
-  return router;
+  return Router;
 });
